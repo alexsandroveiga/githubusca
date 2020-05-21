@@ -1,0 +1,29 @@
+{
+  "name": "githubusca",
+  "displayName": "GITHUBusca",
+  "slug": "githubusca",
+  "version": "1.0.0",
+  "orientation": "portrait",
+  "icon": "./assets/icon.png",
+  "splash": {
+    "image": "./assets/splash.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#31353D"
+  },
+  "adaptiveIcon": {
+    "backgroundColor": "#31353D"
+  },
+  "updates": {
+    "fallbackToCacheTimeout": 0
+  },
+  "assetBundlePatterns": [
+    "**/*"
+  ],
+  "ios": {
+    "supportsTablet": true,
+    "bundleIdentifier": "com.clicksoft.githubscar"
+  },
+  "android": {
+    "package": "com.clicksoft.githubscar"
+  }
+}
