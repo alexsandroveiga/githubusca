@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import api from '../../services/api';
 
 import {
   Container,
@@ -16,7 +17,7 @@ import {
   InfoText,
 } from './styles';
 
-interface User {
+interface IUser {
   id: number;
   name: string;
   login: string;
@@ -28,42 +29,53 @@ interface User {
   following: number;
 }
 
-interface UserItemProps {
-  item: User;
+interface IProps {
+  item: IUser;
 }
 
-const UserHeader: React.FC<UserItemProps> = ({ item }) => {
+const UserHeader: React.FC<IProps> = ({ item }) => {
+  const [user, setUser] = useState<IUser>({} as IUser);
+
+  useEffect(() => {
+    async function loadUser(): Promise<void> {
+      const response = await api.get(`/users/${item.login}`);
+      setUser(response.data);
+    }
+
+    loadUser();
+  }, [item]);
+
   return (
     <Container>
       <Header>
         <Image
           source={{
-            uri: item.avatar_url,
+            uri: user.avatar_url,
           }}
           resizeMode="cover"
         />
         <Content>
-          <Name>{item.name ? item.name : item.login}</Name>
-          {item.bio && <Bio>{item.bio}</Bio>}
-          {item.location && (
+          <Name>{user.name ? user.name : user.login}</Name>
+          {user.bio && <Bio>{user.bio}</Bio>}
+          {user.location && (
             <Location>
               <LocationIcon name="map-pin" size={14} color="#bbb" />
-              <LocationText>{item.location}</LocationText>
+              <LocationText>{user.location}</LocationText>
             </Location>
           )}
         </Content>
       </Header>
       <InfoList>
         <Info>
-          <InfoNumber>{item.public_repos}</InfoNumber>
+          <InfoNumber>{user.public_repos}</InfoNumber>
           <InfoText>Repositórios</InfoText>
         </Info>
         <Info>
-          <InfoNumber>{item.followers}</InfoNumber>
+          <InfoNumber>{user.followers}</InfoNumber>
           <InfoText>Seguidores</InfoText>
         </Info>
         <Info>
-          <InfoNumber>{item.following}</InfoNumber>
+          <InfoNumber>{user.following}</InfoNumber>
           <InfoText>Seguindo</InfoText>
         </Info>
       </InfoList>
