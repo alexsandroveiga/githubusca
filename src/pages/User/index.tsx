@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { FlatList, View, Alert } from 'react-native';
+import { View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import UserHeader from '../../components/UserHeader';
@@ -54,14 +54,12 @@ const User: React.FC<Props> = ({ route, navigation }: Props) => {
     setLoading(true);
 
     const response = await api.get(
-      `/users/${user.login}/repos?per_page=20&page=${page}`,
+      `/users/${user.login}/repos?per_page=10&page=${page}`,
     );
 
     setLoading(false);
 
     if (response.data.length === 0) return;
-
-    console.log(`Página: ${page}`);
 
     setRepositories((prevState) => {
       if (page === 1) {

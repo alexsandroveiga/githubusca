@@ -1,6 +1,6 @@
 /* eslint-disable no-throw-literal */
 import React, { useState, useEffect, useCallback } from 'react';
-import { StatusBar, Alert, View, ScrollView } from 'react-native';
+import { StatusBar, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import api from '../../services/api';
