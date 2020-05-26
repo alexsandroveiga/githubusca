@@ -1,6 +1,6 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
+import { useUser } from '../../hooks/search';
 
 import {
   Container,
@@ -13,80 +13,34 @@ import {
 } from './styles';
 
 interface IUser {
-  id: number;
-  name: string;
   login: string;
-  location: string;
+  name: string;
   avatar_url: string;
-  public_repos: number;
-  followers: number;
-  following: number;
+  location: string;
 }
 
 interface IProps {
-  item: IUser;
+  user: IUser;
 }
 
-const UserItem: React.FC<IProps> = ({ item }) => {
+const UserItem: React.FC<IProps> = ({ user }) => {
+  const { addUser } = useUser();
   const navigation = useNavigation();
 
-  const [users, setUsers] = useState<IUser[]>([]);
-
-  useEffect(() => {
-    async function loadStorageUser(): Promise<void> {
-      const recent = await AsyncStorage.getItem('users');
-
-      if (recent) {
-        setUsers(JSON.parse(recent));
-      }
-    }
-
-    loadStorageUser();
-  }, []);
-
-  const handleNavigate = useCallback(
-    async (user: IUser) => {
-      const findUser = users.find((u) => u.login === user.login);
-
-      if (findUser) {
-        const userIndex = users.findIndex((u) => u.login === user.login);
-
-        const usersList = users;
-
-        usersList.splice(userIndex, 1);
-
-        await AsyncStorage.setItem(
-          'users',
-          JSON.stringify([user, ...usersList]),
-        );
-      } else {
-        await AsyncStorage.setItem('users', JSON.stringify([user, ...users]));
-      }
-
-      navigation.navigate('User', { user });
-    },
-    [navigation, users],
-  );
+  function handleNavigate(): void {
+    addUser(user);
+    navigation.navigate('User', { user });
+  }
 
   return (
-    <Container
-      key={item.id}
-      onPress={() => {
-        handleNavigate(item);
-      }}
-    >
-      <Image
-        source={{
-          uri: item.avatar_url,
-        }}
-        resizeMode="cover"
-      />
+    <Container onPress={() => handleNavigate()}>
+      <Image source={{ uri: user.avatar_url }} resizeMode="cover" />
       <Content>
-        <Name>{item.name ? item.name : item.login}</Name>
-        {item.location && (
+        <Name>{user.name ? user.name : user.login}</Name>
+        {user.location && (
           <Location>
             <LocationIcon name="map-pin" size={12} color="#bbb" />
-            <LocationText>{item.location}</LocationText>
+            <LocationText>{user.location}</LocationText>
           </Location>
         )}
       </Content>

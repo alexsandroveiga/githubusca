@@ -4,10 +4,6 @@ import { StackHeaderProps } from '@react-navigation/stack';
 
 import { Container, BackButton, Icon, Title } from './styles';
 
-interface UserItemProps {
-  item: string;
-}
-
 const Header: React.FC<StackHeaderProps> = ({ navigation, scene }) => {
   const { title } = scene.descriptor.options;
 

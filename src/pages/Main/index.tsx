@@ -16,11 +16,8 @@ const Main: React.FC = () => {
       />
       <Container
         source={{
-          uri: 'https://blog.atom.io/img/posts/github-for-atom.png',
-        }}
-        imageStyle={{
-          width: 1560, // the image height
-          left: undefined,
+          uri:
+            'https://i.pinimg.com/originals/5b/38/53/5b3853c01be59decc69c7496d1d3fe9f.png',
         }}
       >
         <Content>
@@ -29,7 +26,7 @@ const Main: React.FC = () => {
             digite o usuário aqui
           </Title>
         </Content>
-        <Footer>&copy; 2020 Agência Clicksoft</Footer>
+        <Footer>&copy; 2020 Alexsandro Veiga</Footer>
         <Overlay />
       </Container>
     </>

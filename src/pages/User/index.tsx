@@ -54,7 +54,7 @@ const User: React.FC<Props> = ({ route, navigation }: Props) => {
     setLoading(true);
 
     const response = await api.get(
-      `/users/${user.login}/repos?per_page=10&page=${page}`,
+      `/users/${user.login}/repos?per_page=20&page=${page}`,
     );
 
     setLoading(false);
@@ -88,22 +88,20 @@ const User: React.FC<Props> = ({ route, navigation }: Props) => {
   }, [loadRepositories]);
 
   return (
-    <Container>
-      <FlatList
-        data={repositories}
-        renderItem={({ item }) => <RepositoryItem item={item} />}
-        keyExtractor={(item) => String(item.id)}
-        onRefresh={refreshList}
-        refreshing={refreshing}
-        showsVerticalScrollIndicator={false}
-        onEndReached={() => {
-          handleLoadMore();
-        }}
-        onEndReachedThreshold={0.2}
-        ListFooterComponent={loading ? <Loading /> : <View />}
-        ListHeaderComponent={<UserHeader item={user} />}
-      />
-    </Container>
+    <Container
+      data={repositories}
+      initialNumToRender={20}
+      renderItem={({ item }) => <RepositoryItem item={item} />}
+      keyExtractor={(item) => String(item.id)}
+      onRefresh={refreshList}
+      refreshing={refreshing}
+      onEndReached={() => {
+        handleLoadMore();
+      }}
+      onEndReachedThreshold={0.2}
+      ListFooterComponent={loading ? <Loading /> : <View />}
+      ListHeaderComponent={<UserHeader item={user} />}
+    />
   );
 };
 

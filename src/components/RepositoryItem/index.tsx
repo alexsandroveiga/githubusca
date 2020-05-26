@@ -23,11 +23,11 @@ interface IRepository {
   pushed_at: string;
 }
 
-type Props = {
+interface IProps {
   item: IRepository;
-};
+}
 
-const RepositoryItem: React.FC<Props> = ({ item }) => {
+const RepositoryItem: React.FC<IProps> = ({ item }) => {
   const navigation = useNavigation();
 
   return (

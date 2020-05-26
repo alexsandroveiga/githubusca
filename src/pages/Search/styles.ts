@@ -62,9 +62,9 @@ export const SubmitButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const SearchContainer = styled.ScrollView`
+export const SearchContainer = styled.View`
   width: 100%;
-  padding: 16px;
+  padding: 16px 16px 0 16px;
 `;
 
 export const RecentSearchesBar = styled.View`

@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
+import { FlatList, FlatListProps } from 'react-native';
 
-export const Container = styled.View`
+export const Container = styled(FlatList)<FlatListProps>`
   flex: 1;
   background-color: #f4f4f4;
   padding: 0 16px;

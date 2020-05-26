@@ -1,10 +1,11 @@
 /* eslint-disable no-throw-literal */
 import React, { useState, useEffect, useCallback } from 'react';
-import { StatusBar, Alert } from 'react-native';
+import { StatusBar, Alert, View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import api from '../../services/api';
+
+import { useUser } from '../../hooks/search';
 
 import UserItem from '../../components/UserItem';
 
@@ -36,25 +37,9 @@ interface IUser {
 
 const Search: React.FC = () => {
   const navigation = useNavigation();
-
+  const { users, cleanStorage } = useUser();
   const [user, setUser] = useState<IUser>();
-  const [recentUsers, setRecentUsers] = useState<IUser[]>([]);
   const [newUser, setNewUser] = useState('');
-
-  const loadStorageUser = useCallback(async () => {
-    const recent = await AsyncStorage.getItem('users');
-
-    if (recent) {
-      setRecentUsers(JSON.parse(recent));
-    } else {
-      setRecentUsers([]);
-    }
-  }, []);
-
-  const cleanStorage = useCallback(async () => {
-    await AsyncStorage.removeItem('users');
-    loadStorageUser();
-  }, [loadStorageUser]);
 
   const handleFindUser = useCallback(async () => {
     try {
@@ -79,17 +64,12 @@ const Search: React.FC = () => {
     }
   }, [newUser]);
 
-  useEffect(() => {
-    loadStorageUser();
-  }, [loadStorageUser]);
-
   useEffect(
     () =>
       navigation.addListener('focus', () => {
-        loadStorageUser();
         setUser(undefined);
       }),
-    [navigation, loadStorageUser],
+    [navigation],
   );
 
   return (
@@ -120,22 +100,30 @@ const Search: React.FC = () => {
           </BackButton>
         </SearchBar>
 
-        <SearchContainer showsVerticalScrollIndicator={false}>
-          {newUser !== '' && user && <UserItem key={user.id} item={user} />}
+        <ScrollView
+          style={{
+            flex: 1,
+            width: '100%',
+          }}
+          showsVerticalScrollIndicator={false}
+        >
+          <SearchContainer>
+            {newUser !== '' && user && <UserItem key={user.id} user={user} />}
 
-          {recentUsers.length > 0 && newUser === '' && (
-            <RecentSearchesBar>
-              <RecentSearchesText>Buscas recentes</RecentSearchesText>
-              <RecentSearchesButton onPress={() => cleanStorage()}>
-                <RecentSearchesText>Limpar</RecentSearchesText>
-              </RecentSearchesButton>
-            </RecentSearchesBar>
-          )}
+            {users.length > 0 && newUser === '' && (
+              <RecentSearchesBar>
+                <RecentSearchesText>Buscas recentes</RecentSearchesText>
+                <RecentSearchesButton onPress={() => cleanStorage()}>
+                  <RecentSearchesText>Limpar</RecentSearchesText>
+                </RecentSearchesButton>
+              </RecentSearchesBar>
+            )}
 
-          {recentUsers.length > 0 &&
-            newUser === '' &&
-            recentUsers.map((item) => <UserItem key={item.id} item={item} />)}
-        </SearchContainer>
+            {users.length > 0 &&
+              newUser === '' &&
+              users.map((item) => <UserItem key={item.login} user={item} />)}
+          </SearchContainer>
+        </ScrollView>
       </Container>
     </>
   );

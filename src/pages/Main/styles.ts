@@ -9,7 +9,7 @@ export const Container = styled.ImageBackground`
 `;
 
 export const Overlay = styled.View`
-  background: rgba(49, 53, 61, 0.9);
+  background: rgba(49, 53, 61, 0.7);
   position: absolute;
   top: 0;
   z-index: 1;
@@ -19,10 +19,10 @@ export const Overlay = styled.View`
 `;
 
 export const Content = styled.View`
-  margin: 0 16px;
+  margin: 0;
   position: absolute;
   top: 50%;
-  bottom: 0;
+  width: 100%;
 `;
 
 export const Logo = styled.Text`
@@ -30,7 +30,7 @@ export const Logo = styled.Text`
   border-bottom-width: 1px;
   border-color: rgba(255, 255, 255, 0.2);
   padding-bottom: 16px;
-  margin-bottom: 16px;
+  margin: 0 16px 16px 16px;
   font-family: 'Poppins-SemiBold';
   z-index: 2;
 `;
@@ -40,7 +40,9 @@ export const Title = styled.Text`
   color: #fff;
   font-family: 'Poppins-Bold';
   z-index: 2;
-  color: #92cdcf;
+  color: #77caee;
+  align-self: flex-end;
+  margin-right: 16px;
 `;
 
 export const Footer = styled.Text`
